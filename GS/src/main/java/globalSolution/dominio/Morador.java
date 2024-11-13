@@ -21,6 +21,8 @@ public class Morador {
         this.telefone = telefone;
     }
 
+    public Morador() {}
+
     public String getNomeMorador() {
         return nomeMorador;
     }
@@ -52,4 +54,10 @@ public class Morador {
     public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
+
+    public void setIdMorador(Long idMorador) {
+        this.idMorador = idMorador;
+    }
+
+
 }
