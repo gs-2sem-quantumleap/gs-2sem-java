@@ -2,6 +2,8 @@ package globalSolution.dominio;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
+
 public class Morador {
 
     private long idMorador;
@@ -14,11 +16,14 @@ public class Morador {
     @JsonProperty
     private String telefone;
 
-    public Morador(String nomeMorador, String cpf, String email, String telefone) {
+    private ArrayList<Apartamento> listaDeApartamentos;
+
+    public Morador(String nomeMorador, String cpf, String email, String telefone, ArrayList<Apartamento> listaDeApartamentos) {
         this.nomeMorador = nomeMorador;
         this.cpf = cpf;
         this.email = email;
         this.telefone = telefone;
+        this.listaDeApartamentos = listaDeApartamentos;
     }
 
     public Morador() {}
@@ -55,9 +60,17 @@ public class Morador {
         this.telefone = telefone;
     }
 
+    public long getIdMorador() { return this.idMorador; };
+
     public void setIdMorador(Long idMorador) {
         this.idMorador = idMorador;
     }
 
+    public ArrayList<Apartamento> getListaDeApartamentos() {
+        return listaDeApartamentos;
+    }
 
+    public void setListaDeApartamentos(ArrayList<Apartamento> listaDeApartamentos) {
+        this.listaDeApartamentos = listaDeApartamentos;
+    }
 }

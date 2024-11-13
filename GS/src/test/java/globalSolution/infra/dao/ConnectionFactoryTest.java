@@ -1,4 +1,4 @@
-package com.meuapp;
+package globalSolution.infra.dao;
 
 import globalSolution.infra.dao.ConnectionFactory;
 import org.junit.jupiter.api.Test;
