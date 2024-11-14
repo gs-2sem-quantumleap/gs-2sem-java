@@ -31,6 +31,7 @@ public class MoradorService {
 
     public void atualizarMorador(long id,Morador morador) {
         repositorioMorador.atualizarMorador(id, morador);
+        repositorioMorador.fecharConexao();
     }
 
     public void excluirMorador(long id) {

@@ -7,8 +7,7 @@ public class Veiculo {
     private boolean isEletrico;
     private long idApartamento;
 
-    public Veiculo(long idVeiculo, String placaVeiculo, int anoVeiculo, boolean isEletrico, long idApartamento) {
-        this.idVeiculo = idVeiculo;
+    public Veiculo(String placaVeiculo, int anoVeiculo, boolean isEletrico, long idApartamento) {
         this.placaVeiculo = placaVeiculo;
         this.anoVeiculo = anoVeiculo;
         this.isEletrico = isEletrico;

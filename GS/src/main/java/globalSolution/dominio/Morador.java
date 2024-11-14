@@ -8,7 +8,7 @@ public class Morador {
 
     private long idMorador;
     @JsonProperty
-    private String nomeMorador;
+    private String nome_morador;
     @JsonProperty
     private String cpf;
     @JsonProperty
@@ -16,24 +16,21 @@ public class Morador {
     @JsonProperty
     private String telefone;
 
-    private ArrayList<Apartamento> listaDeApartamentos;
-
-    public Morador(String nomeMorador, String cpf, String email, String telefone, ArrayList<Apartamento> listaDeApartamentos) {
-        this.nomeMorador = nomeMorador;
+    public Morador(String nome_morador, String cpf, String email, String telefone) {
+        this.nome_morador = nome_morador;
         this.cpf = cpf;
         this.email = email;
         this.telefone = telefone;
-        this.listaDeApartamentos = listaDeApartamentos;
     }
 
     public Morador() {}
 
     public String getNomeMorador() {
-        return nomeMorador;
+        return nome_morador;
     }
 
     public void setNomeMorador(String nomeMorador) {
-        this.nomeMorador = nomeMorador;
+        this.nome_morador = nomeMorador;
     }
 
     public String getCpf() {
@@ -66,11 +63,4 @@ public class Morador {
         this.idMorador = idMorador;
     }
 
-    public ArrayList<Apartamento> getListaDeApartamentos() {
-        return listaDeApartamentos;
-    }
-
-    public void setListaDeApartamentos(ArrayList<Apartamento> listaDeApartamentos) {
-        this.listaDeApartamentos = listaDeApartamentos;
-    }
 }
