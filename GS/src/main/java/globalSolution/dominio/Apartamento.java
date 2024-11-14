@@ -12,28 +12,45 @@ public class Apartamento {
     private long idMorador;
     @JsonProperty
     private long idCondominio;
-    @JsonProperty
-    private ArrayList<Veiculo> listaDeVeiculos;
-    @JsonProperty
-    private ArrayList<Desconto> listaDeDescontos;
-    @JsonProperty
-    private ArrayList<ContaDeEnergia> listaDeContas;
 
-    public Apartamento(
-                long idApartamento,
-           int numeroApartamento,
-           long idMorador,
-           long idCondominio,
-           ArrayList<Veiculo> listaDeVeiculos,
-           ArrayList<Desconto> listaDeDescontos,
-           ArrayList<ContaDeEnergia> listaDeContas
-    ) {
-        this.idApartamento = idApartamento;
+
+    public Apartamento(int numeroApartamento, long idMorador, long idCondominio) {
         this.numeroApartamento = numeroApartamento;
         this.idMorador = idMorador;
         this.idCondominio = idCondominio;
-        this.listaDeVeiculos = listaDeVeiculos;
-        this.listaDeDescontos = listaDeDescontos;
-        this.listaDeContas = listaDeContas;
+    }
+
+    public Apartamento(){}
+
+    public long getIdApartamento() {
+        return idApartamento;
+    }
+
+    public void setIdApartamento(long idApartamento) {
+        this.idApartamento = idApartamento;
+    }
+
+    public int getNumeroApartamento() {
+        return numeroApartamento;
+    }
+
+    public void setNumeroApartamento(int numeroApartamento) {
+        this.numeroApartamento = numeroApartamento;
+    }
+
+    public long getIdMorador() {
+        return idMorador;
+    }
+
+    public void setIdMorador(long idMorador) {
+        this.idMorador = idMorador;
+    }
+
+    public long getIdCondominio() {
+        return idCondominio;
+    }
+
+    public void setIdCondominio(long idCondominio) {
+        this.idCondominio = idCondominio;
     }
 }

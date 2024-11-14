@@ -36,7 +36,6 @@ public class MoradorDAO implements RepositorioMorador {
                     throw new SQLException();
                 }
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -118,6 +117,5 @@ public class MoradorDAO implements RepositorioMorador {
             throw new RuntimeException(e);
         }
     }
-
 
 }

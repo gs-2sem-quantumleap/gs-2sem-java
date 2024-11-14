@@ -2,6 +2,7 @@ package globalSolution.dominio;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class ContaDeEnergia {
@@ -9,13 +10,13 @@ public class ContaDeEnergia {
     @JsonProperty
     private double valorConta;
     @JsonProperty
-    private Date dataConta;
+    private LocalDate dataConta;
     @JsonProperty
     private double consumoKwh;
     @JsonProperty
     private long idApartamento;
 
-    public ContaDeEnergia(long idContaDeEnergia, double valorConta, Date dataConta, double consumoKwh, long idApartamento){
+    public ContaDeEnergia(long idContaDeEnergia, double valorConta, LocalDate dataConta, double consumoKwh, long idApartamento){
         this.idContaDeEnergia = idContaDeEnergia;
         this.valorConta = valorConta;
         this.dataConta = dataConta;
@@ -41,11 +42,11 @@ public class ContaDeEnergia {
         this.valorConta = valorConta;
     }
 
-    public Date getDataConta() {
+    public LocalDate getDataConta() {
         return dataConta;
     }
 
-    public void setDataConta(Date dataConta) {
+    public void setDataConta(LocalDate dataConta) {
         this.dataConta = dataConta;
     }
 
