@@ -18,7 +18,7 @@ public class Morador {
 
     private ArrayList<Apartamento> listaDeApartamentos;
 
-    public Morador(String nomeMorador, String cpf, String email, String telefone, ArrayList<Apartamento> listaDeApartamentos) {
+    public Morador(String nomeMorador, String cpf, String email, String telefone) {
         this.nomeMorador = nomeMorador;
         this.cpf = cpf;
         this.email = email;
