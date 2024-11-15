@@ -4,7 +4,7 @@ import globalSolution.dominio.Morador;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Scanner;
+
 
 public class MoradorDAOTest {
 

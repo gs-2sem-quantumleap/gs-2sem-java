@@ -32,13 +32,14 @@ public class ApartamentoDAO {
     }
 
     public void atualizarApartamento(long idApartamento, Apartamento apartamento){
-        String sql = "UPDATE tb_gm_apartamento SET numero_apartamento = ?, id_morador = ?, id_condominio = ?";
+        String sql = "UPDATE tb_gm_apartamento SET numero_apartamento = ?, id_morador = ?, id_condominio = ? where id_apartamento = ?";
 
         try{
             PreparedStatement sqlUpdate = conexao.prepareStatement(sql);
             sqlUpdate.setInt(1, apartamento.getNumeroApartamento());
             sqlUpdate.setLong(2, apartamento.getIdMorador());
             sqlUpdate.setLong(3, apartamento.getIdCondominio());
+            sqlUpdate.setLong(4, idApartamento);
 
             sqlUpdate.executeUpdate();
             sqlUpdate.close();

@@ -59,8 +59,20 @@ public class CondominioDAO {
         try {
             PreparedStatement sqlUpdate = conexao.prepareStatement(sql);
             sqlUpdate.setDouble(1, condominio.getContaCondominio());
+            sqlUpdate.setLong(2, idCondominio);
             sqlUpdate.executeUpdate();
         } catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void removerCondiminio(Long idCondominio) {
+        String sqlDeleteCliente = "DELETE FROM tb_gm_condominio WHERE id_condominio = ?";
+
+        try (PreparedStatement pstmt = conexao.prepareStatement(sqlDeleteCliente)) {
+            pstmt.setLong(1, idCondominio);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

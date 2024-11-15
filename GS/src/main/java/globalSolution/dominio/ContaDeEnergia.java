@@ -16,8 +16,7 @@ public class ContaDeEnergia {
     @JsonProperty
     private long idApartamento;
 
-    public ContaDeEnergia(long idContaDeEnergia, double valorConta, LocalDate dataConta, double consumoKwh, long idApartamento){
-        this.idContaDeEnergia = idContaDeEnergia;
+    public ContaDeEnergia(double valorConta, LocalDate dataConta, double consumoKwh, long idApartamento){
         this.valorConta = valorConta;
         this.dataConta = dataConta;
         this.consumoKwh = consumoKwh;
