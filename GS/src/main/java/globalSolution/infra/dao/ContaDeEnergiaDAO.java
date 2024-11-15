@@ -2,12 +2,13 @@ package globalSolution.infra.dao;
 
 import globalSolution.dominio.ContaDeEnergia;
 import globalSolution.dominio.Morador;
+import globalSolution.dominio.RepositorioContaDeEnergia;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class ContaDeEnergiaDAO {
+public class ContaDeEnergiaDAO implements RepositorioContaDeEnergia{
 
     private Connection conexao;
 
@@ -85,13 +86,15 @@ public class ContaDeEnergiaDAO {
     }
 
     public void atualizarConta(long idConta, ContaDeEnergia contaDeEnergia) {
-        String sql = "UPDATE tb_gm_morador SET valor_conta = ?, data_conta = ?, " +
-                "consumo_kwh = ? WHERE id_conta_energia = ?";
+        String sql = "UPDATE tb_gm_conta_energia SET valor_conta = ?, data_conta = ?, " +
+                "consumo_kwh = ?, id_apartamento = ? WHERE id_conta_energia = ?";
         try (PreparedStatement pstmt = conexao.prepareStatement(sql)) {
-            pstmt.setString(1, contaDeEnergia.getNomeMorador());
-            pstmt.setString(2, contaDeEnergia.getCpf());
-            pstmt.setString(3, contaDeEnergia.getEmail());
-            pstmt.setString(4, contaDeEnergia.getTelefone());
+            pstmt.setDouble(1, contaDeEnergia.getValorConta());
+            java.sql.Date sqlDate = java.sql.Date.valueOf(contaDeEnergia.getDataConta());
+            pstmt.setDate(2, sqlDate);
+
+            pstmt.setDouble(3, contaDeEnergia.getConsumoKwh());
+            pstmt.setLong(4, contaDeEnergia.getIdApartamento());
             pstmt.setLong(5, idConta);
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -99,7 +102,24 @@ public class ContaDeEnergiaDAO {
         }
     }
 
+    public void removerConta(Long idConta) {
+        String sql = "DELETE FROM tb_gm_conta_energia WHERE id_conta_energia = ?";
 
+        try (PreparedStatement pstmt = conexao.prepareStatement(sql)) {
+            pstmt.setLong(1, idConta);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void fecharConexao(){
+        try{
+            conexao.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
 

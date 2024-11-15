@@ -24,26 +24,49 @@ public class ApartamentoDAOTest {
 
     @Test
     public void atualizarApartamento(){
-        Apartamento apartamento = new Apartamento(10, 2, 1);
+        Apartamento apartamento = new Apartamento(100, 2, 1);
         ApartamentoDAO apartamentoDAO = new ApartamentoDAO();
-
         long id = 2l;
         apartamentoDAO.atualizarApartamento(id, apartamento);
         apartamentoDAO.fecharConexao();
     }
 
     @Test
-    public void buscandoContasDeEnergiaPeloApartamento(){
+    public void buscarTodosApartamentos(){
         ApartamentoDAO apartamentoDAO = new ApartamentoDAO();
-        long id = 1l;
-        List<ContaDeEnergia> lista = apartamentoDAO.buscarTodasAsContasDeEnergia(id);
-        for (ContaDeEnergia a : lista){
-            System.out.println("Id Apartamento: "+a.getIdApartamento());
-            System.out.println("ID Conta:"+a.getIdContaDeEnergia());
-            System.out.println("Data: "+a.getDataConta());
-            System.out.println("Valor conta: "+a.getValorConta());
+        List<Apartamento> apartamentos = apartamentoDAO.buscarTodosApartamentos();
+
+        for (Apartamento apartamento : apartamentos) {
+            System.out.println("ID: "+ apartamento.getIdApartamento());
+            System.out.println("Numero Apartamento: "+ apartamento.getNumeroApartamento());
+            System.out.println("Id Morador: "+ apartamento.getIdMorador());
+            System.out.println("Id condominio: "+ apartamento.getIdCondominio());
+            System.out.println("---------------------------------");
         }
+        apartamentoDAO.fecharConexao();
     }
+
+    @Test
+    public void buscarApartamentoPorId(){
+        ApartamentoDAO apartamentoDAO = new ApartamentoDAO();
+        Apartamento apartamento = apartamentoDAO.buscarApartamentoPorID(2l);
+        System.out.println("ID: "+ apartamento.getIdApartamento());
+        System.out.println("Numero Apartamento: "+ apartamento.getNumeroApartamento());
+        System.out.println("Id Morador: "+ apartamento.getIdMorador());
+        System.out.println("Id condominio: "+ apartamento.getIdCondominio());
+        System.out.println("---------------------------------");
+        apartamentoDAO.fecharConexao();
+    }
+
+    @Test
+    public void apagarApartamento(){
+        ApartamentoDAO apartamentoDAO = new ApartamentoDAO();
+        apartamentoDAO.deletarApartamento(2l);
+        apartamentoDAO.fecharConexao();
+
+    }
+
+
 
 
 }

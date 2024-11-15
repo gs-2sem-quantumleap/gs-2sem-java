@@ -17,6 +17,7 @@ public class CondominioDAOTest {
 
         condominioDAO.adicionarCondominio(condominio);
         condominioDAO.adicionarCondominio(condominio2);
+        condominioDAO.fecharConexao();
     }
 
     @Test
@@ -32,6 +33,7 @@ public class CondominioDAOTest {
             System.out.println("Numero Apartamento: " + condominio.getNumeroApartamento());
             System.out.println("--------------------------------");
         }
+        condominioDAO.fecharConexao();
     }
 
     @Test
@@ -39,6 +41,7 @@ public class CondominioDAOTest {
         CondominioDAO condominioDAO = new CondominioDAO();
         Condominio condominio = new Condominio(111);
         condominioDAO.atualizarCondominio(1l, condominio);
+        condominioDAO.fecharConexao();
     }
 
     @Test
@@ -46,5 +49,26 @@ public class CondominioDAOTest {
         CondominioDAO condominioDAO = new CondominioDAO();
         long idCondo = 4l;
         condominioDAO.removerCondiminio(idCondo);
+        condominioDAO.fecharConexao();
+    }
+
+    @Test
+    public void buscandoCondominio(){
+        CondominioDAO condominioDAO = new CondominioDAO();
+        Condominio condominio = condominioDAO.buscarCondominio(6L);
+        System.out.println("ID: " + condominio.getIdCondominio());
+        System.out.println("Conta contominio: " + condominio.getContaCondominio());
+        condominioDAO.fecharConexao();
+    }
+
+    @Test
+    public void listandoCondominios(){
+        CondominioDAO condominioDAO = new CondominioDAO();
+        List<Condominio> condominios = condominioDAO.listarTodosCondominios();
+        for(Condominio condominio: condominios){
+            System.out.println("ID: " + condominio.getIdCondominio());
+            System.out.println("Conta: "+ condominio.getContaCondominio());
+            System.out.println("-----------------------");
+        }
     }
 }

@@ -2,6 +2,8 @@ package globalSolution.infra.dao;
 
 import globalSolution.dominio.Apartamento;
 import globalSolution.dominio.ContaDeEnergia;
+import globalSolution.dominio.RepositorioApartamento;
+import globalSolution.dominio.Veiculo;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ApartamentoDAO {
+public class ApartamentoDAO implements RepositorioApartamento {
     private Connection conexao;
 
     public ApartamentoDAO() { this.conexao = new ConnectionFactory().getConnection(); }
@@ -48,33 +50,69 @@ public class ApartamentoDAO {
         }
     }
 
-    public void deletarApartamento(long idApartamento){
-        String sql = "DELETE FROM tb_gm_apartamento WHERE id_apartamento = ?";
+    public void deletarApartamento(long idApartamento) {
+        String countDependentesSql = "SELECT COUNT(*) FROM tb_gm_veiculo WHERE id_apartamento = ?";
+        String deleteSql = "DELETE FROM tb_gm_apartamento WHERE id_apartamento = ?";
 
-        try{
-            PreparedStatement sqlDelete = conexao.prepareStatement(sql);
-            sqlDelete.setLong(1, idApartamento);
-            sqlDelete.execute();
-            sqlDelete.close();
-        } catch (SQLException e){
+        try {
+            PreparedStatement countStmt = conexao.prepareStatement(countDependentesSql);
+            countStmt.setLong(1, idApartamento);
+            ResultSet rs = countStmt.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                System.out.println("Não é possível excluir o apartamento. Existem veículos associados.");
+                return;
+            }
+            rs.close();
+            countStmt.close();
+            PreparedStatement deleteStmt = conexao.prepareStatement(deleteSql);
+            deleteStmt.setLong(1, idApartamento);
+            deleteStmt.execute();
+            deleteStmt.close();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public List<ContaDeEnergia> buscarTodasAsContasDeEnergia(long idApartamento){
-        String sql = "SELECT * FROM tb_gm_conta_energia WHERE id_apartamento = ?";
-        List<ContaDeEnergia> listaDeContasDeEnergia = new ArrayList<ContaDeEnergia>();
+    public List<Apartamento> buscarTodosApartamentos(){
+        String sql = "SELECT * FROM tb_gm_apartamento";
+        List<Apartamento> lista = new ArrayList<Apartamento>();
         try {
             PreparedStatement sqlSelect = conexao.prepareStatement(sql);
-            sqlSelect.setLong(1, idApartamento);
-
             ResultSet rs = sqlSelect.executeQuery();
 
+            while (rs.next()) {
+                Apartamento apartamento = new Apartamento();
+                apartamento.setIdApartamento(rs.getLong("id_apartamento"));
+                apartamento.setNumeroApartamento(rs.getInt("numero_apartamento"));
+                apartamento.setIdMorador(rs.getLong("id_morador"));
+                apartamento.setIdCondominio(rs.getLong("id_condominio"));
+                lista.add(apartamento);
+            }
         } catch (SQLException e){
             e.printStackTrace();
         }
+        return lista;
+    }
 
-        return listaDeContasDeEnergia;
+    public Apartamento buscarApartamentoPorID(long idApartamento){
+        String sql = "SELECT * FROM tb_gm_apartamento WHERE id_apartamento = ?";
+        Apartamento apartamento = null;
+        try (PreparedStatement pstmt = conexao.prepareStatement(sql)) {
+            pstmt.setLong(1, idApartamento);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    apartamento = new Apartamento();
+                    apartamento.setIdApartamento(rs.getLong("id_apartamento"));
+                    apartamento.setNumeroApartamento(rs.getInt("numero_apartamento"));
+                    apartamento.setIdMorador(rs.getLong("id_morador"));
+                    apartamento.setIdCondominio(rs.getLong("id_condominio"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return apartamento;
+
     }
 
     public void fecharConexao(){

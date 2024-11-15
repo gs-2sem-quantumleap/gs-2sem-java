@@ -15,6 +15,7 @@ public class ContaDeEnergiaDAOTest {
         ContaDeEnergiaDAO contaDeEnergiaDAO = new ContaDeEnergiaDAO();
         contaDeEnergiaDAO.adicionarConta(conta);
         contaDeEnergiaDAO.adicionarConta(conta2);
+        contaDeEnergiaDAO.fecharConexao();
     }
 
     @Test
@@ -30,6 +31,7 @@ public class ContaDeEnergiaDAOTest {
             System.out.println("ID Apartamento: "+ conta.getIdApartamento());
             System.out.println("-------------------------------------------");
         }
+        contaDeEnergiaDAO.fecharConexao();
     }
 
     @Test
@@ -39,8 +41,24 @@ public class ContaDeEnergiaDAOTest {
         System.out.println("ID Conta: "+ contaDeEnergia.getIdContaDeEnergia());
         System.out.println("Valor Conta: "+ contaDeEnergia.getValorConta());
         System.out.println("Data Conta: "+ contaDeEnergia.getDataConta());
-        System.out.println("Consumo kWh: :"+ contaDeEnergia.getConsumoKwh());
+        System.out.println("Consumo kWh: "+ contaDeEnergia.getConsumoKwh());
         System.out.println("ID Apartamento: "+ contaDeEnergia.getIdApartamento());
+        contaDeEnergiaDAO.fecharConexao();
+    }
+
+    @Test
+    public void atualizandoConta(){
+        ContaDeEnergiaDAO contaDeEnergiaDAO = new ContaDeEnergiaDAO();
+        ContaDeEnergia conta = new ContaDeEnergia(111, LocalDate.of(2011,11,11), 111, 1l);
+        contaDeEnergiaDAO.atualizarConta(2L, conta);
+        contaDeEnergiaDAO.fecharConexao();
+    }
+
+    @Test
+    public void apagarConta(){
+        ContaDeEnergiaDAO contaDeEnergiaDAO = new ContaDeEnergiaDAO();
+        contaDeEnergiaDAO.removerConta(2L);
+        contaDeEnergiaDAO.fecharConexao();
     }
 
 
