@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 public class ContaDeEnergia {
     private long idContaDeEnergia;
@@ -64,4 +65,16 @@ public class ContaDeEnergia {
     public void setIdApartamento(long idApartamento) {
         this.idApartamento = idApartamento;
     }
+
+    public void verificaCarro(List<Veiculo> veiculos, ContaDeEnergia contaDeEnergia) {
+        for (Veiculo veiculo : veiculos) {
+            if (veiculo.isEletrico()) {
+                double novoConsumo = contaDeEnergia.getConsumoKwh() + 50;
+                contaDeEnergia.setConsumoKwh(novoConsumo);
+            }
+        }
+    }
+
+
+
 }

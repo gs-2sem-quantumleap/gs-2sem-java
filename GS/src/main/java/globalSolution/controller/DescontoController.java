@@ -1,33 +1,30 @@
 package globalSolution.controller;
 
 
+import globalSolution.dominio.Desconto;
 import globalSolution.dominio.Morador;
-import globalSolution.infra.dao.MoradorDAO;
-import globalSolution.service.MoradorService;
+import globalSolution.infra.dao.DescontoDAO;
+import globalSolution.service.DescontoService;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 
+@Path("descontos")
+public class DescontoController {
+    private DescontoService descontoService;
+    private DescontoDAO descontoDAO;
 
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-
-@Path("moradores")
-public class MoradorController {
-    private MoradorDAO moradorDAO;
-    private MoradorService moradorService;
-
-    public MoradorController() {
-        moradorDAO = new MoradorDAO();
-        moradorService = new MoradorService(moradorDAO);
+    public DescontoController(){
+        descontoDAO = new DescontoDAO();
+        descontoService = new DescontoService(descontoDAO);
     }
 
     @POST
-    public Response salvarMorador(Morador morador) {
+    public Response salvarDesconto(Desconto desconto) {
         try {
-            moradorService.adicionarMorador(morador);
+            descontoService.adicionar(desconto);
             return Response.status(Response.Status.CREATED).build();
         }catch (Exception e) {
             System.out.println(e.getMessage());
@@ -40,22 +37,8 @@ public class MoradorController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response listarMoradores() {
         try {
-            ArrayList<Morador> moradores = moradorService.listarMorador();
-            return Response.status(Response.Status.OK).entity(moradores).build();
-        }catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-        }
-    }
-
-    @GET
-    @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response retornaPorId(@PathParam("id") int id) {
-        try{
-            Morador morador = moradorService.buscarMoradorPorId(id);
-            return Response.status(Response.Status.OK).entity(morador).build();
+            ArrayList<Desconto> descontos = descontoService.listaDesconto();
+            return Response.status(Response.Status.OK).entity(descontos).build();
         }catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
@@ -66,9 +49,9 @@ public class MoradorController {
     @PUT
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response atualizarMorador(@PathParam("id") long id, Morador morador) {
+    public Response atualizarDesconto(@PathParam("id") long id, Desconto desconto) {
         try{
-            moradorService.atualizarMorador(id, morador);
+            descontoService.atualizarDesconto(id, desconto);
             return Response.status(Response.Status.OK).build();
         }catch (Exception e) {
             System.out.println(e.getMessage());
@@ -80,9 +63,9 @@ public class MoradorController {
     @DELETE
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deletarMorador(@PathParam("id") long id) {
+    public Response deletarDesconto(@PathParam("id") long id) {
         try {
-            moradorService.excluirMorador(id);
+            descontoService.removerDesconto(id);
             return Response.status(Response.Status.OK).build();
         }catch (Exception e) {
             System.out.println(e.getMessage());
@@ -90,13 +73,5 @@ public class MoradorController {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
     }
-
-
-
-
-
-
-
-
 
 }

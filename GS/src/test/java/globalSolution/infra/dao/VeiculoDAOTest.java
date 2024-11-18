@@ -5,16 +5,17 @@ import globalSolution.dominio.Veiculo;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class VeiculoDAOTest {
 
     @Test
     public void testeAdicionandoVeiculo(){
-        Veiculo veiculo = new Veiculo("1234567", 2002, false, 2L);
-        Veiculo veiculo2 = new Veiculo("1311567", 2002, true, 3L);
+        Veiculo veiculo = new Veiculo("1234567", 2002, true, 22L);
+        //Veiculo veiculo2 = new Veiculo("1311567", 2002, true, 3L);
         VeiculoDAO veiculoDAO = new VeiculoDAO();
         veiculoDAO.adicionarVeiculo(veiculo);
-        veiculoDAO.adicionarVeiculo(veiculo2);
+        //veiculoDAO.adicionarVeiculo(veiculo2);
         veiculoDAO.fecharConexao();
     }
 
@@ -71,5 +72,23 @@ public class VeiculoDAOTest {
         VeiculoDAO veiculoDAO = new VeiculoDAO();
         long idVeiculo = 2l;
         veiculoDAO.removerVeiculo(idVeiculo);
+        veiculoDAO.fecharConexao();
+    }
+
+    @Test
+    public void buscandoVeiculoPorApartamento(){
+        VeiculoDAO veiculoDAO = new VeiculoDAO();
+        long id = 22;
+        List<Veiculo> veiculos = veiculoDAO.buscarVeiculosPorApartamento(id);
+        for (Veiculo veiculo : veiculos) {
+            System.out.println("ID:" + veiculo.getIdVeiculo());
+            System.out.println("Placa:" + veiculo.getPlacaVeiculo());
+            System.out.println("Ano:" + veiculo.getAnoVeiculo());
+            System.out.println("É eletrico:" + veiculo.isEletrico());
+            System.out.println("ID Apartamento: " + veiculo.getIdApartamento());
+            System.out.println("---------------------------");
+        }
+        veiculoDAO.fecharConexao();
+
     }
 }

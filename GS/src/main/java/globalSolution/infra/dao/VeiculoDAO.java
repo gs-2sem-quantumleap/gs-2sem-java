@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class VeiculoDAO implements RepositorioVeiculo {
 
@@ -60,6 +61,30 @@ public class VeiculoDAO implements RepositorioVeiculo {
             e.printStackTrace();
         }
         return veiculo;
+    }
+
+    public List<Veiculo> buscarVeiculosPorApartamento(Long idApartamento) {
+        List<Veiculo> veiculos = new ArrayList<>();
+        String sql = "SELECT * FROM tb_gm_veiculo WHERE id_apartamento = ?";
+
+        try (PreparedStatement pstmt = conexao.prepareStatement(sql)) {
+            pstmt.setLong(1, idApartamento);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Veiculo veiculo = new Veiculo();
+                    veiculo.setIdVeiculo(rs.getLong("id_veiculo"));
+                    veiculo.setPlacaVeiculo(rs.getString("placa_veiculo"));
+                    veiculo.setAnoVeiculo(rs.getInt("ano_veiculo"));
+                    veiculo.setEletrico(rs.getBoolean("is_eletrico"));
+                    veiculo.setIdApartamento(rs.getLong("id_apartamento"));
+                    veiculos.add(veiculo);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return veiculos;
     }
 
     public ArrayList<Veiculo> listarVeiculo() {

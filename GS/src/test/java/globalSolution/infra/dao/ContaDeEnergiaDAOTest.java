@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ContaDeEnergiaDAOTest {
 
@@ -59,6 +60,21 @@ public class ContaDeEnergiaDAOTest {
         ContaDeEnergiaDAO contaDeEnergiaDAO = new ContaDeEnergiaDAO();
         contaDeEnergiaDAO.removerConta(2L);
         contaDeEnergiaDAO.fecharConexao();
+    }
+
+    @Test
+    public void pesquisaDeContasPorCPF(){
+        ContaDeEnergiaDAO contaDeEnergiaDAO = new ContaDeEnergiaDAO();
+        List<ContaDeEnergia> contas = contaDeEnergiaDAO.buscarContaPorCpf("123.123.123-12");
+
+        for (ContaDeEnergia conta: contas){
+            System.out.println("ID Conta: "+ conta.getIdContaDeEnergia());
+            System.out.println("Valor Conta: "+ conta.getValorConta());
+            System.out.println("Data Conta: "+ conta.getDataConta());
+            System.out.println("Consumo kWh: "+ conta.getConsumoKwh());
+            System.out.println("ID Apartamento: "+ conta.getIdApartamento());
+            System.out.println("-------------------------------------------");
+        }
     }
 
 

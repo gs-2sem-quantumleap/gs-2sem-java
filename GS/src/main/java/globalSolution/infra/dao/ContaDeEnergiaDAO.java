@@ -7,6 +7,7 @@ import globalSolution.dominio.RepositorioContaDeEnergia;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ContaDeEnergiaDAO implements RepositorioContaDeEnergia{
 
@@ -112,6 +113,47 @@ public class ContaDeEnergiaDAO implements RepositorioContaDeEnergia{
             e.printStackTrace();
         }
     }
+
+    public List<ContaDeEnergia> buscarContaPorCpf(String cpf) {
+        String sql = """
+        SELECT 
+            cl.id_conta_energia, cl.valor_conta, cl.data_conta, cl.consumo_kwh, cl.id_apartamento
+        FROM 
+            TB_GM_MORADOR m
+        JOIN 
+            TB_GM_APARTAMENTO a ON m.ID_MORADOR = a.ID_MORADOR
+        JOIN 
+            TB_GM_CONTA_ENERGIA cl ON a.ID_APARTAMENTO = cl.ID_APARTAMENTO
+        WHERE 
+            m.CPF = ?
+    """;
+
+        List<ContaDeEnergia> contas = new ArrayList<>();
+
+        try (Connection conn = new ConnectionFactory().getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, cpf);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    ContaDeEnergia conta = new ContaDeEnergia(
+                            rs.getDouble("valor_conta"),
+                            rs.getDate("data_conta").toLocalDate(),
+                            rs.getDouble("consumo_kwh"),
+                            rs.getLong("id_apartamento")
+                    );
+                    conta.setIdContaDeEnergia(rs.getLong("id_conta_energia"));
+                    contas.add(conta);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return contas;
+    }
+
+
 
     public void fecharConexao(){
         try{

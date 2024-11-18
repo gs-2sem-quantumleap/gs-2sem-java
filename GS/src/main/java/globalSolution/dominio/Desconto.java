@@ -2,7 +2,7 @@ package globalSolution.dominio;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Desconto {
     private long idDesconto;
@@ -11,12 +11,11 @@ public class Desconto {
     @JsonProperty
     private String descricaoDesconto;
     @JsonProperty
-    private Date dataDesconto;
+    private LocalDate dataDesconto;
     @JsonProperty
     private long idApartamento;
 
-    public Desconto(long idDesconto, double valorDesconto, String descricaoDesconto, Date dataDesconto, long idApartamento) {
-        this.idDesconto = idDesconto;
+    public Desconto(double valorDesconto, String descricaoDesconto, LocalDate dataDesconto, long idApartamento) {
         this.valorDesconto = valorDesconto;
         this.descricaoDesconto = descricaoDesconto;
         this.dataDesconto = dataDesconto;
@@ -49,11 +48,11 @@ public class Desconto {
         this.descricaoDesconto = descricaoDesconto;
     }
 
-    public Date getDataDesconto() {
+    public LocalDate getDataDesconto() {
         return dataDesconto;
     }
 
-    public void setDataDesconto(Date dataDesconto) {
+    public void setDataDesconto(LocalDate dataDesconto) {
         this.dataDesconto = dataDesconto;
     }
 

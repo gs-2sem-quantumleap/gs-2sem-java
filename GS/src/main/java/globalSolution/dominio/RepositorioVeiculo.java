@@ -1,6 +1,7 @@
 package globalSolution.dominio;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface RepositorioVeiculo {
 
@@ -10,4 +11,5 @@ public interface RepositorioVeiculo {
     void atualizarVeiculo(long idVeiculo, Veiculo veiculo);
     void removerVeiculo(Long idVeiculo);
     void fecharConexao();
+    List<Veiculo> buscarVeiculosPorApartamento(Long idApartamento);
 }

@@ -2,18 +2,46 @@ package globalSolution.service;
 
 import globalSolution.dominio.ContaDeEnergia;
 import globalSolution.dominio.RepositorioContaDeEnergia;
+import globalSolution.dominio.RepositorioVeiculo;
+import globalSolution.dominio.Veiculo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ContaDeEnergiaService {
     private RepositorioContaDeEnergia repositorioContaDeEnergia;
+    private RepositorioVeiculo repositorioVeiculo;
 
-    public ContaDeEnergiaService(RepositorioContaDeEnergia repositorioContaDeEnergia) {
+    public ContaDeEnergiaService(RepositorioContaDeEnergia repositorioContaDeEnergia, RepositorioVeiculo repositorioVeiculo) {
         this.repositorioContaDeEnergia = repositorioContaDeEnergia;
+        this.repositorioVeiculo = repositorioVeiculo;
     }
 
+//    public void adicionarConta(ContaDeEnergia conta) {
+//        ContaDeEnergia cont = new ContaDeEnergia();
+//        List<Veiculo> veiculos = repositorioVeiculo.buscarVeiculosPorApartamento(conta.getIdApartamento());
+//
+//        verificarCarrosEletricos(veiculos, conta);
+//        cont.verificaCarro(veiculos, conta);
+//
+//        repositorioContaDeEnergia.adicionarConta(conta);
+//        repositorioContaDeEnergia.fecharConexao();
+//    }
+
     public void adicionarConta(ContaDeEnergia conta) {
+        List<Veiculo> veiculos = repositorioVeiculo.buscarVeiculosPorApartamento(conta.getIdApartamento());
+        conta.verificaCarro(veiculos, conta);
         repositorioContaDeEnergia.adicionarConta(conta);
+        repositorioContaDeEnergia.fecharConexao();
+    }
+
+    private void verificarCarrosEletricos(List<Veiculo> veiculos, ContaDeEnergia conta) {
+        for (Veiculo veiculo : veiculos) {
+            if (veiculo.isEletrico()) {
+                double novoConsumo = conta.getConsumoKwh() + 50;
+                conta.setConsumoKwh(novoConsumo);
+            }
+        }
         repositorioContaDeEnergia.fecharConexao();
     }
 
@@ -36,6 +64,12 @@ public class ContaDeEnergiaService {
     public void removerConta(long id) {
         repositorioContaDeEnergia.removerConta(id);
         repositorioContaDeEnergia.fecharConexao();
+    }
+
+    public List<ContaDeEnergia> buscarContasPorCPF(String cpf){
+        List<ContaDeEnergia> contaDeEnergias = repositorioContaDeEnergia.buscarContaPorCpf(cpf);
+        repositorioContaDeEnergia.fecharConexao();
+        return contaDeEnergias;
     }
 
 }
