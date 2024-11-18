@@ -17,31 +17,12 @@ public class ContaDeEnergiaService {
         this.repositorioVeiculo = repositorioVeiculo;
     }
 
-//    public void adicionarConta(ContaDeEnergia conta) {
-//        ContaDeEnergia cont = new ContaDeEnergia();
-//        List<Veiculo> veiculos = repositorioVeiculo.buscarVeiculosPorApartamento(conta.getIdApartamento());
-//
-//        verificarCarrosEletricos(veiculos, conta);
-//        cont.verificaCarro(veiculos, conta);
-//
-//        repositorioContaDeEnergia.adicionarConta(conta);
-//        repositorioContaDeEnergia.fecharConexao();
-//    }
+
 
     public void adicionarConta(ContaDeEnergia conta) {
         List<Veiculo> veiculos = repositorioVeiculo.buscarVeiculosPorApartamento(conta.getIdApartamento());
         conta.verificaCarro(veiculos, conta);
         repositorioContaDeEnergia.adicionarConta(conta);
-        repositorioContaDeEnergia.fecharConexao();
-    }
-
-    private void verificarCarrosEletricos(List<Veiculo> veiculos, ContaDeEnergia conta) {
-        for (Veiculo veiculo : veiculos) {
-            if (veiculo.isEletrico()) {
-                double novoConsumo = conta.getConsumoKwh() + 50;
-                conta.setConsumoKwh(novoConsumo);
-            }
-        }
         repositorioContaDeEnergia.fecharConexao();
     }
 
