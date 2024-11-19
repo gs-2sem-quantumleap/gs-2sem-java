@@ -2,6 +2,7 @@ package globalSolution.infra.dao;
 
 import globalSolution.dominio.Apartamento;
 import globalSolution.dominio.Condominio;
+import globalSolution.dominio.ConsumoMorador;
 import globalSolution.dominio.ContaDeEnergia;
 import org.junit.jupiter.api.Test;
 
@@ -63,7 +64,30 @@ public class ApartamentoDAOTest {
         ApartamentoDAO apartamentoDAO = new ApartamentoDAO();
         apartamentoDAO.deletarApartamento(2l);
         apartamentoDAO.fecharConexao();
+    }
 
+    @Test
+    public void buscarDadosConsumoEnergiaTotal(){
+        ApartamentoDAO apartamentoDAO = new ApartamentoDAO();
+        List<ConsumoMorador> lista = apartamentoDAO.buscarDadosConsumoEnergiaTotal();
+        for (ConsumoMorador linha : lista) {
+            System.out.printf("Morador: " +linha.getNomeMorador());
+            System.out.println("Apartamento: "+ linha.getNumeroApartamento());
+            System.out.println("Consumo: "+ linha.getConsumoTotalKwh());
+            System.out.println("----------------");
+        }
+    }
+
+    @Test
+    public void buscarTop3MenoresConsumos(){
+        ApartamentoDAO apartamentoDAO = new ApartamentoDAO();
+        List<ConsumoMorador> lista = apartamentoDAO.buscarTop3MenoresConsumos();
+        for (ConsumoMorador linha : lista) {
+            System.out.printf("Morador: " +linha.getNomeMorador());
+            System.out.println("Apartamento: "+ linha.getNumeroApartamento());
+            System.out.println("Consumo: "+ linha.getConsumoTotalKwh());
+            System.out.println("----------------");
+        }
     }
 
 

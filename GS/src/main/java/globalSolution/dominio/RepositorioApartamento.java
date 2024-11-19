@@ -8,6 +8,8 @@ public interface RepositorioApartamento {
     void deletarApartamento(long idApartamento);
     List<Apartamento> buscarTodosApartamentos();
     Apartamento buscarApartamentoPorID(long idApartamento);
+    public List<ConsumoMorador> buscarDadosConsumoEnergiaTotal();
+    public List<ConsumoMorador> buscarTop3MenoresConsumos();
     void fecharConexao();
 
 }

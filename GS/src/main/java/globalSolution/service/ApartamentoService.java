@@ -1,6 +1,7 @@
 package globalSolution.service;
 
 import globalSolution.dominio.Apartamento;
+import globalSolution.dominio.ConsumoMorador;
 import globalSolution.dominio.RepositorioApartamento;
 import java.util.List;
 
@@ -35,6 +36,18 @@ public class ApartamentoService {
     public void excluirApartamento(long id) {
         repositorioApartamento.deletarApartamento(id);
         repositorioApartamento.fecharConexao();
+    }
+
+    public List<ConsumoMorador> listarConsumoTotalKwh(){
+        List<ConsumoMorador> lista = repositorioApartamento.buscarDadosConsumoEnergiaTotal();
+        repositorioApartamento.fecharConexao();
+        return lista;
+    }
+
+    public List<ConsumoMorador> buscarTop3MenoresConsumos(){
+        List<ConsumoMorador> lista = repositorioApartamento.buscarTop3MenoresConsumos();
+        repositorioApartamento.fecharConexao();
+        return lista;
     }
 
 

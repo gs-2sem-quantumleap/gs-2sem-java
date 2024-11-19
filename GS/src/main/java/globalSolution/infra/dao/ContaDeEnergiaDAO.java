@@ -5,7 +5,6 @@ import globalSolution.dominio.Morador;
 import globalSolution.dominio.RepositorioContaDeEnergia;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,22 +17,34 @@ public class ContaDeEnergiaDAO implements RepositorioContaDeEnergia{
     }
 
     public void adicionarConta(ContaDeEnergia contaDeEnergia) {
-        String sql = "INSERT INTO tb_gm_conta_energia (valor_conta, data_conta, consumo_kwh, id_apartamento) VALUES (?, ?, ?, ?)";
+        String sqlBuscarIdApartamento = "SELECT id_apartamento FROM tb_gm_apartamento WHERE numero_apartamento = ?";
+        String sqlInserirConta = "INSERT INTO tb_gm_conta_energia (valor_conta, data_conta, consumo_kwh, id_apartamento) VALUES (?, ?, ?, ?)";
 
-        try (Connection conn = new ConnectionFactory().getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql, new String[] {"id_conta_energia" +
-                     ""})) {
-            pstmt.setDouble(1, contaDeEnergia.getValorConta());
-            pstmt.setDate(2, Date.valueOf(contaDeEnergia.getDataConta()));
-            pstmt.setDouble(3, contaDeEnergia.getConsumoKwh());
-            pstmt.setLong(4, contaDeEnergia.getIdApartamento());
-            pstmt.executeUpdate();
+        try (Connection conn = new ConnectionFactory().getConnection()) {
+            long idApartamento = 0;
+            try (PreparedStatement pstmtBuscarId = conn.prepareStatement(sqlBuscarIdApartamento)) {
+                pstmtBuscarId.setLong(1, contaDeEnergia.getIdApartamento());
+                try (ResultSet rs = pstmtBuscarId.executeQuery()) {
+                    if (rs.next()) {
+                        idApartamento = rs.getLong("id_apartamento");
+                    } else {
+                        throw new SQLException("Apartamento não encontrado");
+                    }
+                }
+            }
+            try (PreparedStatement pstmt = conn.prepareStatement(sqlInserirConta, new String[] {"id_conta_energia"})) {
+                pstmt.setDouble(1, contaDeEnergia.getValorConta());
+                pstmt.setDate(2, Date.valueOf(contaDeEnergia.getDataConta()));
+                pstmt.setDouble(3, contaDeEnergia.getConsumoKwh());
+                pstmt.setLong(4, idApartamento);
+                pstmt.executeUpdate();
 
-            try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    contaDeEnergia.setIdContaDeEnergia(generatedKeys.getLong(1));
-                } else {
-                    throw new SQLException();
+                try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        contaDeEnergia.setIdContaDeEnergia(generatedKeys.getLong(1));
+                    } else {
+                        throw new SQLException("Falha ao obter o ID gerado para a conta de energia.");
+                    }
                 }
             }
 
@@ -41,6 +52,7 @@ public class ContaDeEnergiaDAO implements RepositorioContaDeEnergia{
             e.printStackTrace();
         }
     }
+
 
     public ContaDeEnergia buscarContaPorId(Long id) {
         ContaDeEnergia contaDeEnergia = null;
@@ -117,7 +129,11 @@ public class ContaDeEnergiaDAO implements RepositorioContaDeEnergia{
     public List<ContaDeEnergia> buscarContaPorCpf(String cpf) {
         String sql = """
         SELECT 
-            cl.id_conta_energia, cl.valor_conta, cl.data_conta, cl.consumo_kwh, cl.id_apartamento
+            cl.id_conta_energia, 
+            cl.valor_conta, 
+            cl.data_conta, 
+            cl.consumo_kwh, 
+            cl.id_apartamento
         FROM 
             TB_GM_MORADOR m
         JOIN 
@@ -130,8 +146,10 @@ public class ContaDeEnergiaDAO implements RepositorioContaDeEnergia{
 
         List<ContaDeEnergia> contas = new ArrayList<>();
 
-        try (Connection conn = new ConnectionFactory().getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (
+                Connection conn = new ConnectionFactory().getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)
+        ) {
             pstmt.setString(1, cpf);
 
             try (ResultSet rs = pstmt.executeQuery()) {
@@ -147,11 +165,13 @@ public class ContaDeEnergiaDAO implements RepositorioContaDeEnergia{
                 }
             }
         } catch (SQLException e) {
+            System.err.println("Erro ao buscar contas de energia pelo CPF: " + cpf);
             e.printStackTrace();
         }
 
         return contas;
     }
+
 
 
 

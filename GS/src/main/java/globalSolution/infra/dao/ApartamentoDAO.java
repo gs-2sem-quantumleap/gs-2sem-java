@@ -1,9 +1,6 @@
 package globalSolution.infra.dao;
 
-import globalSolution.dominio.Apartamento;
-import globalSolution.dominio.ContaDeEnergia;
-import globalSolution.dominio.RepositorioApartamento;
-import globalSolution.dominio.Veiculo;
+import globalSolution.dominio.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -114,6 +111,76 @@ public class ApartamentoDAO implements RepositorioApartamento {
         return apartamento;
 
     }
+
+    public List<ConsumoMorador> buscarDadosConsumoEnergiaTotal() {
+        String sql = """
+                SELECT 
+                m.nome_morador, 
+                a.numero_apartamento, 
+                COALESCE(SUM(c.consumo_kwh), 0) AS consumo_total_kwh
+                FROM tb_gm_apartamento a
+                JOIN tb_gm_morador m ON a.id_morador = m.id_morador
+                LEFT JOIN tb_gm_conta_energia c ON a.id_apartamento = c.id_apartamento
+                GROUP BY m.nome_morador, a.numero_apartamento
+                ORDER BY a.numero_apartamento
+                """;
+
+        List<ConsumoMorador> resultado = new ArrayList<>();
+        try (PreparedStatement pstmt = conexao.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                String nomeMorador = rs.getString("nome_morador");
+                int numeroApartamento = rs.getInt("numero_apartamento");
+                double consumoTotalKwh = rs.getDouble("consumo_total_kwh");
+
+                // Cria uma nova instância de ConsumoMorador
+                ConsumoMorador consumo = new ConsumoMorador(nomeMorador, numeroApartamento, consumoTotalKwh);
+                resultado.add(consumo);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return resultado;
+    }
+
+
+    public List<ConsumoMorador> buscarTop3MenoresConsumos() {
+        String sql = """
+        SELECT 
+            m.nome_morador, 
+            a.numero_apartamento, 
+            COALESCE(SUM(c.consumo_kwh), 0) AS consumo_total_kwh
+        FROM tb_gm_apartamento a
+        JOIN tb_gm_morador m ON a.id_morador = m.id_morador
+        LEFT JOIN tb_gm_conta_energia c ON a.id_apartamento = c.id_apartamento
+        GROUP BY m.nome_morador, a.numero_apartamento
+        HAVING SUM(c.consumo_kwh) > 0
+        ORDER BY consumo_total_kwh ASC
+        FETCH FIRST 3 ROWS ONLY
+    """;
+
+        List<ConsumoMorador> resultado = new ArrayList<>();
+        try (PreparedStatement pstmt = conexao.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                String nomeMorador = rs.getString("nome_morador");
+                int numeroApartamento = rs.getInt("numero_apartamento");
+                double consumoTotalKwh = rs.getDouble("consumo_total_kwh");
+                ConsumoMorador consumo = new ConsumoMorador(nomeMorador, numeroApartamento, consumoTotalKwh);
+                resultado.add(consumo);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return resultado;
+    }
+
+
+
+
+
 
     public void fecharConexao(){
         try{

@@ -7,6 +7,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 public class ContaDeEnergiaDAOTest {
 
     @Test
@@ -63,19 +66,24 @@ public class ContaDeEnergiaDAOTest {
     }
 
     @Test
-    public void pesquisaDeContasPorCPF(){
+    public void pesquisaDeContasPorCPF() {
         ContaDeEnergiaDAO contaDeEnergiaDAO = new ContaDeEnergiaDAO();
-        List<ContaDeEnergia> contas = contaDeEnergiaDAO.buscarContaPorCpf("123.123.123-12");
+        List<ContaDeEnergia> contas = contaDeEnergiaDAO.buscarContaPorCpf("1");
 
-        for (ContaDeEnergia conta: contas){
-            System.out.println("ID Conta: "+ conta.getIdContaDeEnergia());
-            System.out.println("Valor Conta: "+ conta.getValorConta());
-            System.out.println("Data Conta: "+ conta.getDataConta());
-            System.out.println("Consumo kWh: "+ conta.getConsumoKwh());
-            System.out.println("ID Apartamento: "+ conta.getIdApartamento());
+        assertNotNull(contas, "A lista de contas deveria ser inicializada.");
+        assertFalse(contas.isEmpty(), "Nenhuma conta encontrada para o CPF.");
+
+        for (ContaDeEnergia conta : contas) {
+            System.out.println("ID Conta: " + conta.getIdContaDeEnergia());
+            System.out.println("Valor Conta: " + conta.getValorConta());
+            System.out.println("Data Conta: " + conta.getDataConta());
+            System.out.println("Consumo kWh: " + conta.getConsumoKwh());
+            System.out.println("ID Apartamento: " + conta.getIdApartamento());
             System.out.println("-------------------------------------------");
         }
     }
+
+
 
 
 
