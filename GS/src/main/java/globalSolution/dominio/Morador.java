@@ -2,13 +2,11 @@ package globalSolution.dominio;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.ArrayList;
-
 public class Morador {
 
     private long idMorador;
     @JsonProperty
-    private String nome_morador;
+    private String nomeMorador;
     @JsonProperty
     private String cpf;
     @JsonProperty
@@ -16,8 +14,8 @@ public class Morador {
     @JsonProperty
     private String telefone;
 
-    public Morador(String nome_morador, String cpf, String email, String telefone) {
-        this.nome_morador = nome_morador;
+    public Morador(String nomeMorador, String cpf, String email, String telefone) {
+        this.nomeMorador = nomeMorador;
         this.cpf = cpf;
         this.email = email;
         this.telefone = telefone;
@@ -26,11 +24,11 @@ public class Morador {
     public Morador() {}
 
     public String getNomeMorador() {
-        return nome_morador;
+        return nomeMorador;
     }
 
     public void setNomeMorador(String nomeMorador) {
-        this.nome_morador = nomeMorador;
+        this.nomeMorador = nomeMorador;
     }
 
     public String getCpf() {
