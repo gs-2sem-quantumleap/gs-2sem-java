@@ -10,4 +10,5 @@ public interface RepositorioMorador {
     void atualizarMorador(long idMorador, Morador morador);
     void removerMorador(Long idMorador);
     void fecharConexao();
+    Morador buscarMoradorPorCpf(String cpf);
 }

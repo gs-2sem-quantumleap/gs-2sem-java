@@ -21,46 +21,6 @@ public class ApartamentoController {
         apartamentoService = new ApartamentoService(apartamentoDAO);
     }
 
-    @POST
-    public Response salvarApartamento(Apartamento apartamento) {
-        try {
-            apartamentoService.adicionarApartamento(apartamento);
-            return Response.status(Response.Status.CREATED).build();
-        }catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-        }
-    }
-
-    @GET
-    @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response retornaPorId(@PathParam("id") int id) {
-        try{
-            Apartamento apartamento = apartamentoService.buscarApartamento(id);
-            return Response.status(Response.Status.OK).entity(apartamento).build();
-        }catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-        }
-    }
-
-    @GET
-    @Path("/consumoKWH")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response listarTotalKWH() {
-        try {
-            List<ConsumoMorador> apartamento = apartamentoService.listarConsumoTotalKwh();
-            return Response.status(Response.Status.OK).entity(apartamento).build();
-        }catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-        }
-    }
-
     @GET
     @Path("/menoresGastos")
     @Produces(MediaType.APPLICATION_JSON)
@@ -74,56 +34,5 @@ public class ApartamentoController {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
     }
-
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response listarConsumoTotalKwh() {
-        try {
-            List<Apartamento> apartamento = apartamentoService.buscarApartamentos();
-            return Response.status(Response.Status.OK).entity(apartamento).build();
-        }catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-        }
-    }
-
-
-    @PUT
-    @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response atualizarApartamento(@PathParam("id") long id, Apartamento apartamento) {
-        try{
-            apartamentoService.alterarApartamento(id, apartamento);
-            return Response.status(Response.Status.OK).build();
-        }catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-        }
-    }
-
-    @DELETE
-    @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response deletarApartamento(@PathParam("id") long id) {
-        try {
-            apartamentoService.excluirApartamento(id);
-            return Response.status(Response.Status.OK).build();
-        }catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-        }
-    }
-
-
-
-
-
-
-
-
 
 }

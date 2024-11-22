@@ -39,5 +39,11 @@ public class MoradorService {
         repositorioMorador.fecharConexao();
     }
 
+    public Morador buscarMoradorPorCpf(String cpf){
+        Morador morador = repositorioMorador.buscarMoradorPorCpf(cpf);
+        repositorioMorador.fecharConexao();
+        return morador;
+    }
+
 
 }

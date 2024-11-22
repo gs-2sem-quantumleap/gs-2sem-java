@@ -21,18 +21,6 @@ public class DescontoController {
         descontoService = new DescontoService(descontoDAO);
     }
 
-    @POST
-    public Response salvarDesconto(Desconto desconto) {
-        try {
-            descontoService.adicionar(desconto);
-            return Response.status(Response.Status.CREATED).build();
-        }catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-        }
-    }
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response listarMoradores() {
@@ -46,32 +34,7 @@ public class DescontoController {
         }
     }
 
-    @PUT
-    @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response atualizarDesconto(@PathParam("id") long id, Desconto desconto) {
-        try{
-            descontoService.atualizarDesconto(id, desconto);
-            return Response.status(Response.Status.OK).build();
-        }catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-        }
-    }
 
-    @DELETE
-    @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response deletarDesconto(@PathParam("id") long id) {
-        try {
-            descontoService.removerDesconto(id);
-            return Response.status(Response.Status.OK).build();
-        }catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-        }
-    }
+
 
 }

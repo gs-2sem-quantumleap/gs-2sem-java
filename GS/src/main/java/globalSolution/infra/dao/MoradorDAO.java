@@ -110,12 +110,40 @@ public class MoradorDAO implements RepositorioMorador {
         }
     }
 
+
+
     public void fecharConexao(){
         try{
             conexao.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public Morador buscarMoradorPorCpf(String cpf) {
+        Morador morador = new Morador();
+        String sqlSelectCliente = "SELECT * FROM tb_gm_morador where cpf = ?";
+        try {
+            PreparedStatement comandoDeSelecao = conexao.prepareStatement(sqlSelectCliente);
+            comandoDeSelecao.setString(1, cpf);
+
+            ResultSet rs = comandoDeSelecao.executeQuery();
+            if (rs.next()) {
+                morador.setIdMorador(rs.getLong("id_morador"));
+                morador.setNomeMorador(rs.getString("nome_morador"));
+                morador.setCpf(rs.getString("cpf"));
+                morador.setEmail(rs.getString("email"));
+                morador.setTelefone(rs.getString("telefone"));
+            } else {
+                morador = null;
+            }
+
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        return morador;
     }
 
 }

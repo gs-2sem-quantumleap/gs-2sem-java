@@ -38,19 +38,6 @@ public class ContaDeEnergiaController {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response listarContas() {
-        try {
-            ArrayList<ContaDeEnergia> conta = contaDeEnergiaService.buscarContas();
-            return Response.status(Response.Status.OK).entity(conta).build();
-        }catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-        }
-    }
-
-    @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response retornaPorId(@PathParam("id") int id) {
@@ -77,9 +64,6 @@ public class ContaDeEnergiaController {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
     }
-
-
-
 
 
     @PUT

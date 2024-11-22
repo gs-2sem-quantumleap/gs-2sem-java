@@ -74,7 +74,18 @@ public class MoradorDAOTest {
         moradorDAO.removerMorador(idMorador);
     }
 
+    @Test
+    public void buscarMoradorPorCpf(){
+        MoradorDAO moradorDAO = new MoradorDAO();
 
+        Morador morador = moradorDAO.buscarMoradorPorCpf("12345678900");
+        System.out.println("ID:" + morador.getIdMorador());
+        System.out.println("Nome:" + morador.getNomeMorador());
+        System.out.println("CPF:" + morador.getCpf());
+        System.out.println("Email:" + morador.getEmail());
+        System.out.println("Telefone" + morador.getTelefone());
+        System.out.println("---------------------------");
+    }
 
 
 

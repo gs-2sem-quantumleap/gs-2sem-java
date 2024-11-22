@@ -24,30 +24,6 @@ public class MoradorController {
         moradorService = new MoradorService(moradorDAO);
     }
 
-    @POST
-    public Response salvarMorador(Morador morador) {
-        try {
-            moradorService.adicionarMorador(morador);
-            return Response.status(Response.Status.CREATED).build();
-        }catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-        }
-    }
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response listarMoradores() {
-        try {
-            ArrayList<Morador> moradores = moradorService.listarMorador();
-            return Response.status(Response.Status.OK).entity(moradores).build();
-        }catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-        }
-    }
 
     @GET
     @Path("/{id}")
@@ -77,26 +53,18 @@ public class MoradorController {
         }
     }
 
-    @DELETE
-    @Path("/{id}")
+
+    @GET
+    @Path("/buscarPorCpf/{cpf}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deletarMorador(@PathParam("id") long id) {
-        try {
-            moradorService.excluirMorador(id);
-            return Response.status(Response.Status.OK).build();
-        }catch (Exception e) {
+    public Response buscarPorCpf(@PathParam("cpf") String cpf){
+        try{
+            Morador morador = moradorService.buscarMoradorPorCpf(cpf);
+            return Response.status(Response.Status.OK).entity(morador).build();
+        } catch (Exception e){
             System.out.println(e.getMessage());
             e.printStackTrace();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
     }
-
-
-
-
-
-
-
-
-
 }
